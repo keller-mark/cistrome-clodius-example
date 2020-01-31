@@ -8,7 +8,7 @@ PROCESSED_DIR = join(DATA_DIR, "processed")
 
 rule all:
     input:
-        join(RAW_DIR, "chr1_127epigenomes_15observedStates.hierarchy.json")
+        join(RAW_DIR, "chr1_127epigenomes_15observedStates.rowinfo.txt")
         #join(PROCESSED_DIR, "chr1_127epigenomes_15observedStates.multires.mv5")
 
 rule clodius:
@@ -24,19 +24,26 @@ rule clodius:
 
 rule rowinfo:
     input:
-        data=join(RAW_DIR, "{filename}.data.txt"),
-        hierarchy=join(RAW_DIR, "{filename}.hierarchy.json")
+        join(RAW_DIR, "{filename}.data.txt"),
+        join(RAW_DIR, "{filename}.hierarchy_matrix.json")
     output:
         join(RAW_DIR, "{filename}.rowinfo.txt")
     script:
         join(SRC_DIR, "rowinfo.py")
 
+rule split:
+    input:
+        join(RAW_DIR, "{filename}.hierarchy_tree.json")
+    output:
+        join(RAW_DIR, "{filename}.hierarchy_matrix.json")
+    script:
+        join(SRC_DIR, "split.py")
 
 rule cluster:
     input:
         join(RAW_DIR, "{filename}.data.txt")
     output:
-        join(RAW_DIR, "{filename}.hierarchy.json")
+        join(RAW_DIR, "{filename}.hierarchy_tree.json")
     script:
         join(SRC_DIR, "cluster.py")
 
