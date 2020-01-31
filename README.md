@@ -13,7 +13,7 @@ Run the example:
 snakemake
 ```
 
-Load processed multivec file into higlass server:
+Load processed multivec file into [higlass server](https://github.com/higlass/higlass-server):
 
 ```sh
 # cd path/to/higlass-server
