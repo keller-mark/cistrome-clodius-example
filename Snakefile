@@ -8,18 +8,23 @@ PROCESSED_DIR = join(DATA_DIR, "processed")
 
 rule all:
     input:
-        join(RAW_DIR, "chr1_127epigenomes_15observedStates.rowinfo.txt")
-        #join(PROCESSED_DIR, "chr1_127epigenomes_15observedStates.multires.mv5")
+        join(PROCESSED_DIR, "chr1_127epigenomes_15observedStates.multires.mv5")
 
 rule clodius:
     input:
-        join(RAW_DIR, "{filename}.data.txt"),
-        join(RAW_DIR, "{filename}.rowinfo.txt")
+        data=join(RAW_DIR, "{filename}.data.txt"),
+        rowinfo=join(RAW_DIR, "{filename}.rowinfo.txt")
     output:
         join(PROCESSED_DIR, "{filename}.multires.mv5")
     shell:
         """
-        # TODO
+        clodius convert bedfile-to-multivec \
+            {input.data} \
+            --row-infos-filename {input.rowinfo} \
+            --output-file {output} \
+            --assembly hg19 \
+            --starting-resolution 200 \
+            --num-rows 127
         """
 
 rule rowinfo:

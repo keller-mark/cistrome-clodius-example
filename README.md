@@ -6,57 +6,18 @@ conda env create -f environment.yml
 source activate clodius-multivec-env
 ```
 
-### Notes:
-
-This repo demonstrates the creation of a new multivec file from epilogos chromatin states data<br>
-**Goal**: specify row metadata as JSON -> access metadata objects in HiGlass
-
-
-#### Steps
-
-1. Download and uncompress epilogos file [epilogos/chr1_127epigenomes_15observedStates.txt.gz](https://github.com/Altius/epilogos/blob/master/data/chr1_127epigenomes_15observedStates.txt.gz)
-2. Generate row-infos file (containing one JSON object per row)
-3. Run clodius `bedfile-to-multivec`  commands [clodius/multivec.rst](https://github.com/higlass/clodius/blob/develop/docs/genomic/multivec.rst#other-data-multivec)
-
-#### Example
+Run the example:
 
 ```
 snakemake
 ```
 
+### Notes:
 
-### Older notes:
+This repo demonstrates the creation of a new multivec file from epilogos chromatin states data<br>
+**Goal**: specify row metadata as JSON -> access metadata objects in HiGlass
 
-```sh
-# without row_info file
-clodius convert bedfile-to-multivec \
-        chr1_127epigenomes_15observedStates.txt \
-        --assembly hg19 \
-        --starting-resolution 200
-```
-
-To generate row-infos file:
-
-```py
-import pandas as pd
-df = pd.read_csv('chr1_127epigenomes_15observedStates.txt', sep='\t', header=None)
-r = df.columns.values.tolist()[3:]
-r = ["State %d" % x for x in r]
-s = pd.Series(r)
-s.to_frame().to_csv('rowinfo.tsv', sep='\t', index=False, header=False)
-```
-
-```
-# with row_info file
-clodius convert bedfile-to-multivec \
-        chr1_127epigenomes_15observedStates.txt \
-        --assembly hg19 \
-        --starting-resolution 200 \
-		--row-infos-filename rownames.tsv \
-    	--num-rows 127
-```
-
-Output file: `chr1_127epigenomes_15observedStates.multires.mv5`
+Output file: `chr1_127epigenomes_15observedStates.multires.mv5` in `data/processed/`
 
 To verify that row names are included:
 

@@ -1,6 +1,7 @@
 import json
 from uuid import uuid4
 
+# Encode a tree of nested JSON objects as a "matrix"
 def tree_to_matrix(tree):
 
     def is_leaf(node):
