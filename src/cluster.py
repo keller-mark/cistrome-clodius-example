@@ -6,6 +6,8 @@ import json
 
 
 def linkage_matrix_to_tree(Z, labels):
+    # Reference: https://stackoverflow.com/a/20060322
+    
     T = scipy.cluster.hierarchy.to_tree(Z)
     
     # Create dictionary for labeling nodes by their indices
@@ -39,7 +41,6 @@ def cluster(df):
     Z = scipy.cluster.hierarchy.linkage(observation_vectors, method='ward')
     return Z, observation_labels
     
-
 
 if __name__ == "__main__":
     df = pd.read_csv(snakemake.input[0], sep='\t', header=None)

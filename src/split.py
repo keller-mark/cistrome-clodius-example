@@ -7,20 +7,23 @@ def tree_to_matrix(tree):
     def is_leaf(node):
         return ("children" not in node.keys() or len(node["children"]) == 0)
 
-    used_level_ids = []
+    used_uuids = []
 
     def convert(node, prev):
         curr = prev.copy()
 
+        # Base case:
         if is_leaf(node):
             curr.append(node["name"])
             return curr
         
+        # General case:
         level_id = str(uuid4())
-        assert(level_id not in used_level_ids)
-        used_level_ids.append(level_id)
-
+        assert(level_id not in used_uuids)
+        used_uuids.append(level_id)
         curr.append(level_id)
+
+        # Recursively run `convert()` on the node's children:
         children = map(lambda c: convert(c, curr), node["children"])
         result = []
         for child in children:
@@ -33,8 +36,13 @@ def tree_to_matrix(tree):
     
     matrix = convert(tree, [])
 
+    # `matrix` is a 2-dimensional list, where each inner array represents the position of a leaf node.
+
+    # We want to convert the uuid strings to unique integers to reduce the size of the data.
+    # We also want to map each leaf to its array, so we create `matrix_dict`
+    #   where key is leaf name, value is the array associated with the leaf.
     matrix_dict = dict()
-    uuid_to_int = dict(zip(used_level_ids, map(lambda i: f"i-{i}", range(len(used_level_ids)))))
+    uuid_to_int = dict(zip(used_uuids, map(lambda i: f"i-{i}", range(len(used_uuids)))))
     for i in range(len(matrix)):
         for j in range(len(matrix[i]) - 1):
             matrix[i][j] = uuid_to_int[matrix[i][j]]

@@ -16,6 +16,7 @@ snakemake
 Load processed multivec file into [higlass server](https://github.com/higlass/higlass-server):
 
 ```sh
+# source deactivate
 # cd path/to/higlass-server
 # workon higlass-server
 python manage.py ingest_tileset \
@@ -23,7 +24,8 @@ python manage.py ingest_tileset \
     --filename path/to/data/processed/chr1_127epigenomes_15observedStates.multires.mv5 \
     --filetype multivec \
     --datatype matrix
-# python manage.py runserver
+# python manage.py runserver 9000
+# deactivate
 ```
 
 Use the following track definition:
@@ -33,7 +35,7 @@ Use the following track definition:
     "type": "horizontal-multivec",
     "uid": "cistrome-track",
     "tilesetUid": "cistrome-demo",
-    "server": "http://localhost:8000/api/v1",
+    "server": "http://localhost:9000/api/v1",
     "options": {
         "labelPosition": "hidden",
         "labelColor": "black",
