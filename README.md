@@ -21,7 +21,12 @@ Load processed multivec file into [higlass server](https://github.com/higlass/hi
 # workon higlass-server
 python manage.py ingest_tileset \
     --uid cistrome-demo \
-    --filename path/to/data/processed/chr1_127epigenomes_15observedStates.multires.mv5 \
+    --filename path/to/data/processed/chr1_127epigenomes_15observedStates.127.multires.mv5 \
+    --filetype multivec \
+    --datatype matrix
+python manage.py ingest_tileset \
+    --uid cistrome-demo-small \
+    --filename path/to/data/processed/chr1_127epigenomes_15observedStates.12.multires.mv5 \
     --filetype multivec \
     --datatype matrix
 # python manage.py runserver 9000
@@ -44,7 +49,7 @@ Use the following track definition:
         "trackBorderWidth": 0,
         "trackBorderColor": "black",
         "heatmapValueScaling": "log",
-        "name": "chr1_127epigenomes_15observedStates.multires.mv5",
+        "name": "chr1_127epigenomes_15observedStates.127.multires.mv5",
         "labelLeftMargin": 0,
         "labelRightMargin": 0,
         "labelTopMargin": 0,
@@ -86,7 +91,7 @@ To verify that row names are included:
 
 ```py
 import h5py
-f = h5py.File('chr1_127epigenomes_15observedStates.multires.mv5', 'r')
+f = h5py.File('chr1_127epigenomes_15observedStates.127.multires.mv5', 'r')
 f['resolutions']['200'].attrs.keys()
 f['resolutions']['200'].attrs['row_infos']
 ```

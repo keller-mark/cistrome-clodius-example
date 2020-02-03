@@ -5,17 +5,22 @@ DATA_DIR = "data"
 RAW_DIR = join(DATA_DIR, "raw")
 PROCESSED_DIR = join(DATA_DIR, "processed")
 
+NUM_ROWS = [12, 127] # 127 is the max {num_rows} value.
+
 
 rule all:
     input:
-        join(PROCESSED_DIR, "chr1_127epigenomes_15observedStates.multires.mv5")
+        expand(
+            join(PROCESSED_DIR, "chr1_127epigenomes_15observedStates.{num_rows}.multires.mv5"),
+            num_rows=NUM_ROWS
+        )
 
 rule clodius:
     input:
         data=join(RAW_DIR, "{filename}.data.txt"),
-        rowinfo=join(RAW_DIR, "{filename}.rowinfo.txt")
+        rowinfo=join(RAW_DIR, "{filename}.{num_rows}.rowinfo.txt")
     output:
-        join(PROCESSED_DIR, "{filename}.multires.mv5")
+        join(PROCESSED_DIR, "{filename}.{num_rows}.multires.mv5")
     shell:
         """
         clodius convert bedfile-to-multivec \
@@ -24,23 +29,23 @@ rule clodius:
             --output-file {output} \
             --assembly hg19 \
             --starting-resolution 200 \
-            --num-rows 127
+            --num-rows {wildcards.num_rows}
         """
 
 rule rowinfo:
     input:
         join(RAW_DIR, "{filename}.data.txt"),
-        join(RAW_DIR, "{filename}.hierarchy_matrix.json")
+        join(RAW_DIR, "{filename}.{num_rows}.hierarchy_matrix.json")
     output:
-        join(RAW_DIR, "{filename}.rowinfo.txt")
+        join(RAW_DIR, "{filename}.{num_rows}.rowinfo.txt")
     script:
         join(SRC_DIR, "rowinfo.py")
 
 rule split:
     input:
-        join(RAW_DIR, "{filename}.hierarchy_tree.json")
+        join(RAW_DIR, "{filename}.{num_rows}.hierarchy_tree.json")
     output:
-        join(RAW_DIR, "{filename}.hierarchy_matrix.json")
+        join(RAW_DIR, "{filename}.{num_rows}.hierarchy_matrix.json")
     script:
         join(SRC_DIR, "split.py")
 
@@ -48,7 +53,7 @@ rule cluster:
     input:
         join(RAW_DIR, "{filename}.data.txt")
     output:
-        join(RAW_DIR, "{filename}.hierarchy_tree.json")
+        join(RAW_DIR, "{filename}.{num_rows}.hierarchy_tree.json")
     script:
         join(SRC_DIR, "cluster.py")
 

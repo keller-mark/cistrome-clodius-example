@@ -6,6 +6,8 @@ random.seed(10)
 
 if __name__ == "__main__":
     df = pd.read_csv(snakemake.input[0], sep='\t', header=None)
+    num_rows = int(snakemake.wildcards["num_rows"])
+    df = df[df.columns.values.tolist()[:3+num_rows]]
     state_cols = map(str, df.columns.values.tolist()[3:])
 
     with open(snakemake.input[1], 'r') as f:
@@ -19,7 +21,8 @@ if __name__ == "__main__":
                 "state": state_col,
                 "h": tree_matrix[state_col], # include the hierarchy array
                 "r1": random.randint(0, 10), # include random metadata values
-                "r2": random.randint(0, 100)
+                "r2": random.randint(0, 100),
+                "url": "http://google.com/?r3=" + str(random.randint(0, 1000))
             }
             metadata_json = json.dumps(metadata)
             f.write(f"{metadata_json}\n")

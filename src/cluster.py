@@ -44,6 +44,8 @@ def cluster(df):
 
 if __name__ == "__main__":
     df = pd.read_csv(snakemake.input[0], sep='\t', header=None)
+    num_rows = int(snakemake.wildcards["num_rows"])
+    df = df[df.columns.values.tolist()[:3+num_rows]]
     Z, labels = cluster(df)
     tree_dict = linkage_matrix_to_tree(Z, labels)
 
