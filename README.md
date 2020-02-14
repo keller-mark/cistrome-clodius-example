@@ -20,7 +20,7 @@ Load processed multivec file into [higlass server](https://github.com/higlass/hi
 # cd path/to/higlass-server
 # workon higlass-server
 python manage.py ingest_tileset \
-    --uid cistrome-demo \
+    --uid cistrome-demo-large \
     --filename path/to/data/processed/chr1_127epigenomes_15observedStates.127.multires.mv5 \
     --filetype multivec \
     --datatype matrix
@@ -39,7 +39,7 @@ Use the following track definition:
 {
     "type": "horizontal-multivec",
     "uid": "cistrome-track",
-    "tilesetUid": "cistrome-demo",
+    "tilesetUid": "cistrome-demo-large",
     "server": "http://localhost:9000/api/v1",
     "options": {
         "labelPosition": "hidden",

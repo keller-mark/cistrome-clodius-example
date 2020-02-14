@@ -5,7 +5,7 @@ DATA_DIR = "data"
 RAW_DIR = join(DATA_DIR, "raw")
 PROCESSED_DIR = join(DATA_DIR, "processed")
 
-NUM_ROWS = [12, 127] # 127 is the max {num_rows} value.
+NUM_ROWS = [17] # 127 is the max {num_rows} value.
 
 
 rule all:
