@@ -17,7 +17,7 @@ def linkage_matrix_to_tree(Z, labels):
     def add_node(node, parent):
         # First create the new node and append it to its parent's children
         name = node.id if node.left or node.right else id_to_label[node.id]
-        new_node = dict( name=str(name) )
+        new_node = dict( name=str(name), dist=node.dist )
         if "children" in parent.keys():
             parent["children"].append( new_node )
         else:
@@ -27,7 +27,7 @@ def linkage_matrix_to_tree(Z, labels):
         if node.right: add_node( node.right, new_node )
 
     # Initialize dictionary, then recursively iterate through tree
-    tree_dict = dict( name="root", children=[] )
+    tree_dict = dict( name="root", children=[], dist=None )
     add_node(T, tree_dict)
     return tree_dict
 
